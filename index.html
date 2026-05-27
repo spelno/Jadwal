@@ -6,14 +6,27 @@
   <title>Anugerah Scheduler - Ruangan Aster</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
+    /* ====================================================================
+       PENGATURAN TATA LETAK CETAK PROFESIONAL (PRINT FRIENDLY OPTIMIZATION)
+       ==================================================================== */
     @media print {
-      body { background: white; color: black; padding: 0; }
+      body { background: white; color: black; padding: 0; margin: 0; }
       .no-print { display: none !important; }
       .print-container { width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; }
-      table { page-break-inside: avoid; width: 100%; border-collapse: collapse; }
-      th, td { border: 1px solid #000 !important; font-size: 9px; padding: 4px 2px !important; text-align: center; }
-      th:first-child, td:first-child { text-align: left; padding-left: 6px !important; font-size: 10px; font-weight: bold; }
+      
+      /* Memaksa browser menampilkan warna background komponen mini saat dicetak */
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      
+      table { page-break-inside: avoid; width: 100%; border-collapse: collapse; margin-top: 15px; }
+      th, td { border: 1px solid #000 !important; font-size: 9px; padding: 5px 2px !important; text-align: center; }
+      th:first-child, td:first-child { text-align: left; padding-left: 8px !important; font-size: 10px; font-weight: bold; }
+      
+      /* Desain Kop Cetak Formal */
+      .kop-cetak-formal { display: block !important; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
     }
+    
+    /* Sembunyikan kop formal di layar browser biasa agar tidak ganda dengan header web */
+    .kop-cetak-formal { display: none; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
@@ -34,6 +47,12 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-6 py-8 print-container">
+    
+    <div class="kop-cetak-formal text-center">
+      <h1 class="text-lg font-bold uppercase tracking-wide text-black" style="font-family: 'Times New Roman', Times, serif;">RS ANUGERAH TOMOHON</h1>
+      <h2 class="text-sm font-bold uppercase tracking-normal text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 2px;">JADWAL DINAS DINAMIS PERAWAT — RUANGAN ASTER ATAS</h2>
+      <p class="text-xs font-medium text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 4px;" id="judulBulanCetak">Periode Bulan: Memuat...</p>
+    </div>
     
     <div class="no-print grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
       
@@ -121,7 +140,7 @@
     <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-6 border-b border-slate-100 pb-4">
         <div>
-          <h2 class="text-base font-bold text-slate-900">Matriks Kontrol Roster Ruangan</h2>
+          <h2 class="text-base font-bold text-slate-900" id="judulBulanScreen">Matriks Kontrol Roster Ruangan</h2>
           <p class="text-xs text-slate-400 font-medium mt-0.5">RS Anugerah Tomohon — Ruangan Aster (Atas)</p>
         </div>
         <div class="no-print text-[11px] font-medium flex flex-wrap gap-2.5">
@@ -152,17 +171,32 @@
   </main>
 
   <script>
-    // GANTI TULISAN DI BAWAH INI DENGAN LINK WEB APP /EXEC ANDA YANG ASLI
     const API_URL = "https://script.google.com/macros/s/AKfycbyZoIAmq8D2QHhQfyjJtC_D7CLT7qnvJyvyPvfhu9etK6ekMFfRdqTwkV1atbb4pvCX/exec";
 
     document.addEventListener("DOMContentLoaded", function() {
+      setJudulBulanOtomatis();
       if(API_URL.includes("URL_WEB_APP_GAS_ANDA") || API_URL === "") {
-        tampilkanDebug("Sistem mendeteksi variabel API_URL masih kosong atau bernilai teks standar. Silakan ganti dengan link Web App Google Apps Script Anda.");
+        tampilkanDebug("Sistem mendeteksi variabel API_URL masih kosong.");
         return;
       }
       fetchDataPerawat();
       fetchMatriksRoster();
     });
+
+    // Fungsi Interfase Baru untuk Mendeteksi Waktu & Merender Judul Bulan Berjalan
+    function setJudulBulanOtomatis() {
+      const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      const waktuSekarang = new Date();
+      const bulanSistem = namaBulan[waktuSekarang.getMonth()];
+      const tahunSistem = waktuSekarang.getFullYear();
+      
+      const formatTeksLengkap = `${bulanSistem} ${tahunSistem}`;
+      
+      // Update judul di tampilan monitor utama
+      document.getElementById("judulBulanScreen").textContent = `Matriks Roster Ruangan — Periode ${formatTeksLengkap}`;
+      // Update judul kop atas khusus berkas cetak kertas
+      document.getElementById("judulBulanCetak").textContent = `Periode Bulan: ${formatTeksLengkap}`;
+    }
 
     function tampilkanDebug(pesan) {
       const box = document.getElementById("debugBox");
@@ -175,10 +209,7 @@
       fetch(`${API_URL}?action=getPerawat`)
         .then(res => res.json())
         .then(data => {
-          if(!Array.isArray(data)) {
-            tampilkanDebug(`Eror getPerawat: Server mengembalikan data non-array. Isi response: ${JSON.stringify(data)}`);
-            return;
-          }
+          if(!Array.isArray(data)) return;
           const selectPlot = document.getElementById("pilihPerawat");
           const selectCuti = document.getElementById("cutiNamaPerawat");
           const selectModLama = document.getElementById("modLama");
@@ -200,8 +231,7 @@
               selectCuti.appendChild(oCuti);
             }
           });
-        })
-        .catch(err => tampilkanDebug(`Koneksi Gagal (getPerawat): ${err.message}. Pastikan status Web App GAS di-set ke 'Anyone'.`));
+        });
     }
 
     function fetchMatriksRoster() {
@@ -212,12 +242,10 @@
         .then(matrix => {
           if(!Array.isArray(matrix)) {
             tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Format Basis Data Salah.</td></tr>`;
-            tampilkanDebug(`Eror getMatriks: Data bukan array matriks. Periksa apakah tab 'Matriks_Jadwal' kosong atau salah nama.`);
             return;
           }
 
           tbody.innerHTML = "";
-          // Iterasi dimulai dari baris ke-2 (index 1) karena baris ke-1 adalah judul kolom
           for(let i = 1; i < matrix.length; i++) {
             let baris = matrix[i];
             if(!baris || baris.length === 0 || !baris[0]) continue;
@@ -240,14 +268,9 @@
             }
             tbody.appendChild(tr);
           }
-
-          if(tbody.children.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400">Tidak ada baris data perawat yang terdeteksi di Matriks_Jadwal.</td></tr>`;
-          }
         })
         .catch(err => {
           tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Gagal memuat basis data asli dari spreadsheet.</td></tr>`;
-          tampilkanDebug(`Eror Loop Matriks: ${err.message}. Ini biasanya terjadi jika ada kolom tanggal yang terhapus atau format nama di kolom A salah.`);
         });
     }
 
@@ -270,7 +293,7 @@
       const msg = document.getElementById("statusMessage");
       
       msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-slate-100 text-slate-700 block";
-      msg.textContent = "Memproses verifikasi aturan dan sandi kelompok...";
+      msg.textContent = "Memproses verifikasi aturan...";
 
       fetch(API_URL, {
         method: "POST",
@@ -282,13 +305,8 @@
           msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
           msg.textContent = `❌ ${hasil.validasi.pesanEror}`;
         } else if(hasil.status === "success") {
-          if (!hasil.validasi.amanKombinasiSandi) {
-            msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-amber-50 text-amber-800 border border-amber-200 block";
-            msg.textContent = `⚠️ Tersimpan. Peringatan: Shift ini belum memiliki kombinasi penyeimbang Sandi 2!`;
-          } else {
-            msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
-            msg.textContent = `✅ Sukses mengunci jadwal. Aturan kapasitas & sandi seimbang aman.`;
-          }
+          msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
+          msg.textContent = `✅ Sukses mengunci jadwal.`;
           fetchMatriksRoster();
         }
       });
@@ -297,7 +315,7 @@
     function simpanCutiTahunan() {
       const nama = document.getElementById("cutiNamaPerawat").value;
       const jumlah = document.getElementById("cutiJumlahHari").value;
-      if(!nama || !jumlah) return alert("Mohon pilih staf dan jumlah hari cuti.");
+      if(!nama || !jumlah) return alert("Mohon pilih staf dan jumlah hari.");
 
       fetch(API_URL, {
         method: "POST",
@@ -314,7 +332,6 @@
       const namaLama = document.getElementById("modLama").value;
       const namaBaru = document.getElementById("modBaru").value;
       if(!namaLama || !namaBaru) return alert("Mohon lengkapi pengisian pejabat MOD.");
-      if(namaLama === namaBaru) return alert("Nama pejabat lama dan baru tidak boleh sama.");
       if(!confirm(`Sahkan perubahan struktural jabatan MOD tetap baru?`)) return;
 
       fetch(API_URL, {
