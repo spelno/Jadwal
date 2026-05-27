@@ -6,14 +6,14 @@
   <title>Anugerah Scheduler - Ruangan Aster</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
-    /* Optimasi Tata Letak Cetak (Print Layout) */
+    /* Format Khusus Layout Cetak (Print Friendly) */
     @media print {
       body { background: white; color: black; padding: 0; }
       .no-print { display: none !important; }
       .print-container { width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; }
       table { page-break-inside: avoid; width: 100%; border-collapse: collapse; }
       th, td { border: 1px solid #000 !important; font-size: 9px; padding: 4px 2px !important; text-align: center; }
-      th:first-child, td:first-child { text-align: left; padding-left: 4px !important; font-size: 10px; }
+      th:first-child, td:first-child { text-align: left; padding-left: 6px !important; font-size: 10px; font-weight: bold; }
     }
   </style>
 </head>
@@ -37,78 +37,96 @@
   <main class="max-w-7xl mx-auto px-6 py-8 print-container">
     
     <div class="no-print grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
-        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-          📅 Plotting Dinas & Libur Reguler
-        </h2>
-        <form id="formRequest" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">📅 Plotting Roster Bulanan</h2>
+        <form id="formRequest" class="space-y-3">
           <div>
-            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1.5">Nama Perawat</label>
+            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Nama Perawat</label>
             <select id="pilihPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500 transition" required>
               <option value="">Pilih Karyawan...</option>
             </select>
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1.5">Pilih Tanggal</label>
+            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pilih Tanggal</label>
             <input type="date" id="pilihTanggal" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500 transition" required>
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1.5">Dinas / Shift</label>
+            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pilihan Dinas / Shift</label>
             <select id="pilihShift" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500 transition" required>
               <option value="P">Pagi (08.00 - 15.00)</option>
               <option value="S">Siang (15.00 - 21.00)</option>
               <option value="M">Malam (20.00 - 08.00)</option>
               <option value="Off">OFF (Libur Reguler)</option>
-              <option value="MOD">MOD (Jadwal Manajemen)</option>
             </select>
           </div>
-          <div class="md:col-span-3 flex justify-end mt-2">
-            <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-2 rounded-xl text-xs transition shadow-xs cursor-pointer">
-              Kunci ke Roster
-            </button>
-          </div>
+          <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 rounded-xl text-xs transition shadow-xs cursor-pointer text-center">
+            Kunci ke Roster
+          </button>
         </form>
-        <div id="statusMessage" class="mt-4 text-xs hidden p-3 rounded-xl font-medium"></div>
+        <div id="statusMessage" class="mt-3 text-[11px] hidden p-2.5 rounded-xl font-medium"></div>
       </div>
 
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
         <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-2">
-            🌴 Input Kuota Cuti Tahunan
-          </h2>
-          <p class="text-[11px] text-slate-500 mb-4">Input jumlah hari kerja jika ada staf yang mengambil cuti panjang bulan ini.</p>
-          
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌴 Alokasi Jatah Cuti Bulanan</h2>
+          <p class="text-[11px] text-slate-500 mb-4">Potong kuota jatah wajib kerja jika ada staf yang cuti panjang bulan ini.</p>
           <div class="space-y-3">
             <div>
-              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1.5">Nama Perawat</label>
-              <select id="cutiNamaPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500 transition">
+              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Nama Perawat</label>
+              <select id="cutiNamaPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
                 <option value="">Pilih Karyawan...</option>
               </select>
             </div>
             <div>
-              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1.5">Jumlah Hari Cuti</label>
-              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 12" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500 transition" min="1" max="31">
+              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Total Hari Cuti</label>
+              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 12" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden" min="1" max="31">
             </div>
           </div>
         </div>
         <button onclick="simpanCutiTahunan()" class="w-full mt-4 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs transition cursor-pointer text-center">
-          Simpan Data Cuti
+          Simpan Data Cuti Bulanan
         </button>
       </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ Otoritas Manajemen (MOD Tetap)</h2>
+          <p class="text-[11px] text-slate-500 mb-4">Gunakan ini hanya jika ada pergantian resmi personil jabatan MOD tetap di ruangan.</p>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pejabat MOD Aktif Saat Ini</label>
+              <select id="modLama" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
+                <option value="">Pilih Pejabat Aktif...</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Tunjuk Personil Pengganti</label>
+              <select id="modBaru" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
+                <option value="">Pilih Pengganti Permanen...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button onclick="eksekusiPerubahanMOD()" class="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 rounded-xl text-xs transition cursor-pointer text-center">
+          Sahkan Jabatan MOD Baru
+        </button>
+      </div>
+
     </div>
 
     <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-6 border-b border-slate-100 pb-4">
         <div>
-          <h2 class="text-base font-bold text-slate-900">Matriks Kontrol Roster Bulanan</h2>
+          <h2 class="text-base font-bold text-slate-900">Matriks Kontrol Roster Ruangan</h2>
           <p class="text-xs text-slate-400 font-medium mt-0.5">RS Anugerah Tomohon — Ruangan Aster (Atas)</p>
         </div>
-        <div class="no-print text-[11px] font-medium flex flex-wrap gap-3">
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-100 border border-slate-300"></span> Office (Karau)</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-teal-50 border border-teal-200"></span> Pagi</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-50 border border-emerald-200"></span> Siang</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-50 border border-indigo-200"></span> Malam</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-50 border border-rose-200"></span> OFF / Cuti</span>
+        <div class="no-print text-[11px] font-medium flex flex-wrap gap-2.5">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-slate-100 border"></span> Offc</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-teal-50 border"></span> Pagi</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-50 border"></span> Siang</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-50 border"></span> Malam</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-50 border"></span> OFF</span>
         </div>
       </div>
 
@@ -116,11 +134,9 @@
         <table class="w-full text-left border-collapse text-[11px]">
           <thead>
             <tr class="bg-slate-50 border-b border-slate-200">
-              <th class="p-3 font-semibold text-slate-700 min-w-[170px] border">Nama Perawat</th>
+              <th class="p-3 font-semibold text-slate-700 min-w-[180px] border">Nama Perawat</th>
               <script>
-                for(let d=1; d<=31; d++) {
-                  document.write(`<th class="p-1.5 font-bold text-slate-700 text-center border w-8">${d}</th>`);
-                }
+                for(let d=1; d<=31; d++) { document.write(`<th class="p-1 font-bold text-slate-700 text-center border w-8">${d}</th>`); }
               </script>
             </tr>
           </thead>
@@ -132,55 +148,50 @@
   </main>
 
   <script>
-    // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
-    const API_URL = "https://script.google.com/macros/s/AKfycbw...Isi_ID_Deployment_Anda.../exec";
+    // PASTE URL DEPLOYMENT WEB APP GOOGLE APPS SCRIPT ANDA DI BAWAH INI
+    const API_URL = "URL_WEB_APP_GAS_ANDA_DI_SINI";
 
     document.addEventListener("DOMContentLoaded", function() {
       fetchDataPerawat();
       fetchMatriksRoster();
     });
 
-    // 1. Ambil Data Perawat untuk Mengisi Komponen Dropdown
     function fetchDataPerawat() {
-      if(API_URL.includes("Isi_ID_Deployment_Anda")) {
-        console.log("Menjalankan data simulasi internal (URL API belum dipasang).");
-        isiDropdownKomponen([{nama:"Karau Maria"}, {nama:"Katim Ani"}, {nama:"Perawat Budi"}, {nama:"Citra"}, {nama:"Dedi"}, {nama:"Eva"}]);
-        return;
-      }
+      if(API_URL.includes("URL_WEB_APP_GAS_ANDA")) return;
       
       fetch(`${API_URL}?action=getPerawat`)
         .then(res => res.json())
-        .then(data => isiDropdownKomponen(data))
-        .catch(err => console.error("Gagal sinkronisasi data perawat:", err));
+        .then(data => {
+          const selectPlot = document.getElementById("pilihPerawat");
+          const selectCuti = document.getElementById("cutiNamaPerawat");
+          const selectModLama = document.getElementById("modLama");
+          const selectModBaru = document.getElementById("modBaru");
+
+          data.forEach(p => {
+            let opt = document.createElement("option");
+            opt.value = p.nama;
+            opt.textContent = p.nama + ` (Sandi ${p.grupRoster})`;
+            selectPlot.appendChild(opt);
+
+            let oMod1 = document.createElement("option"); oMod1.value = p.nama; oMod1.textContent = p.nama;
+            let oMod2 = document.createElement("option"); oMod2.value = p.nama; oMod2.textContent = p.nama;
+            selectModLama.appendChild(oMod1);
+            selectModBaru.appendChild(oMod2);
+
+            if(p.peran !== "Kepala Ruangan") {
+              let oCuti = document.createElement("option"); oCuti.value = p.nama; oCuti.textContent = p.nama;
+              selectCuti.appendChild(oCuti);
+            }
+          });
+        });
     }
 
-    function isiDropdownKomponen(daftar) {
-      const selectPlot = document.getElementById("pilihPerawat");
-      const selectCuti = document.getElementById("cutiNamaPerawat");
-      
-      daftar.forEach(p => {
-        let opt1 = document.createElement("option");
-        opt1.value = p.nama;
-        opt1.textContent = p.nama + (p.grupRoster ? ` (Grup ${p.grupRoster})` : '');
-        selectPlot.appendChild(opt1);
-
-        // Hanya masukkan perawat pelaksana/MOD untuk opsi kuota cuti tahunan
-        if(p.peran !== "Kepala Ruangan") {
-          let opt2 = document.createElement("option");
-          opt2.value = p.nama;
-          opt2.textContent = p.nama;
-          selectCuti.appendChild(opt2);
-        }
-      });
-    }
-
-    // 2. Ambil Data Matriks Roster dan Render ke dalam Grid Tabel
     function fetchMatriksRoster() {
       const tbody = document.getElementById("tabelJadwalBody");
-      tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sedang memuat data roster dari spreadsheet...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi database aktif...</td></tr>`;
 
-      if(API_URL.includes("Isi_ID_Deployment_Anda")) {
-        renderSimulasiLokal();
+      if(API_URL.includes("URL_WEB_APP_GAS_ANDA")) {
+        tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-amber-600 font-medium">⚠️ Silakan tempel URL Web App GAS Anda pada kode index.html.</td></tr>`;
         return;
       }
 
@@ -188,35 +199,34 @@
         .then(res => res.json())
         .then(matrix => {
           tbody.innerHTML = "";
-          // Lewati baris pertama jika itu adalah nama header kolom spreadsheet
           for(let i = 1; i < matrix.length; i++) {
-            let barisData = matrix[i];
+            let baris = matrix[i];
+            if(!baris[0]) continue;
+
             let tr = document.createElement("tr");
             tr.className = "border-b border-slate-100 hover:bg-slate-50/50 transition";
 
-            // Kolom Informasi Karyawan
             let tdInfo = document.createElement("td");
             tdInfo.className = "p-2.5 font-medium text-slate-900 border bg-white sticky left-0 z-10 shadow-xs";
-            tdInfo.innerHTML = `${barisData[0]}`;
+            tdInfo.innerHTML = baris[0];
             tr.appendChild(tdInfo);
 
-            // Kolom Plotting Shift Tanggal 1 sampai 31
             for(let d = 1; d <= 31; d++) {
               let tdVal = document.createElement("td");
-              let val = barisData[d] || "-";
+              let val = baris[d] ? baris[d].toString().trim() : "-";
+              if(val === "") val = "-";
               tdVal.textContent = val;
-              tdVal.className = "p-1.5 text-center border font-bold " + dapatkanWarnaShift(val);
+              tdVal.className = "p-1 text-center border font-bold " + dapatkanWarnaShift(val);
               tr.appendChild(tdVal);
             }
             tbody.appendChild(tr);
           }
         })
         .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Gagal memuat basis data. Pastikan konfigurasi Deployment Web App GAS benar.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Gagal memuat basis data asli dari spreadsheet.</td></tr>`;
         });
     }
 
-    // Pewarnaan Tag Grid Berdasarkan Karakter Shift
     function dapatkanWarnaShift(shift) {
       switch(shift.toUpperCase()) {
         case 'P': return 'bg-teal-50 text-teal-700 border-teal-100';
@@ -228,7 +238,6 @@
       }
     }
 
-    // 3. Eksekusi Kirim Plotting Shift Manual Kepala Ruangan
     document.getElementById("formRequest").addEventListener("submit", function(e) {
       e.preventDefault();
       const nama = document.getElementById("pilihPerawat").value;
@@ -236,48 +245,35 @@
       const shift = document.getElementById("pilihShift").value;
       const msg = document.getElementById("statusMessage");
       
-      msg.className = "mt-4 text-xs p-3 rounded-xl font-medium bg-slate-100 text-slate-700 block";
-      msg.textContent = "Sedang memproses verifikasi aturan dan sandi keamanan regu...";
-
-      if(API_URL.includes("Isi_ID_Deployment_Anda")) {
-        msg.className = "mt-4 text-xs p-3 rounded-xl font-medium bg-amber-50 text-amber-800 border border-amber-200 block";
-        msg.textContent = "⚠️ Fitur aktif memerlukan URL Web App GAS Anda ditempel pada variabel API_URL di file HTML ini.";
-        return;
-      }
+      msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-slate-100 text-slate-700 block";
+      msg.textContent = "Memproses verifikasi aturan dan sandi kelompok...";
 
       fetch(API_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "plotShift", nama: nama, tanggal: tanggal, shift: shift, keterangan: "Input Panel Karau" })
+        body: JSON.stringify({ action: "plotShift", nama: nama, tanggal: tanggal, shift: shift, keterangan: "Plot Panel Utama" })
       })
       .then(res => res.json())
       .then(hasil => {
         if(hasil.status === "rejected") {
-          msg.className = "mt-4 text-xs p-3 rounded-xl font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
+          msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
           msg.textContent = `❌ ${hasil.validasi.pesanEror}`;
         } else if(hasil.status === "success") {
           if (!hasil.validasi.amanKombinasiSandi) {
-            msg.className = "mt-4 text-xs p-3 rounded-xl font-medium bg-amber-50 text-amber-800 border border-amber-200 block";
-            msg.textContent = `⚠️ Sukses diplot. Namun peringatan: Shift pada tanggal tersebut belum memiliki personel berbobot Sandi 2!`;
+            msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-amber-50 text-amber-800 border border-amber-200 block";
+            msg.textContent = `⚠️ Tersimpan. Peringatan: Shift ini belum memiliki kombinasi penyeimbang Sandi 2!`;
           } else {
-            msg.className = "mt-4 text-xs p-3 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
-            msg.textContent = `✅ Sukses mengunci jadwal. Aturan kapasitas minimal dinas dan keseimbangan kelompok roster terpenuhi.`;
+            msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
+            msg.textContent = `✅ Sukses mengunci jadwal. Aturan kapasitas & sandi seimbang aman.`;
           }
           fetchMatriksRoster();
         }
-      })
-      .catch(err => {
-        msg.className = "mt-4 text-xs p-3 rounded-xl font-medium bg-rose-50 text-rose-800 block";
-        msg.textContent = "Koneksi gagal. Periksa kembali hak akses 'Anyone' pada web app deployment GAS Anda.";
       });
     });
 
-    // 4. Eksekusi Pengaturan Kuota Cuti Tahunan Bulanan
     function simpanCutiTahunan() {
       const nama = document.getElementById("cutiNamaPerawat").value;
       const jumlah = document.getElementById("cutiJumlahHari").value;
-      
-      if(!nama || !jumlah) return alert("Mohon tentukan nama staf dan total jumlah hari cuti.");
-      if(API_URL.includes("https://script.google.com/macros/s/AKfycbw2TctLjB88LszX34eXbf-pgACvKcGqhIDvvFFHxz4ECLkrWM-QyRXR1lBgeBd3Ewjv/exec")) return alert("Fitur Cuti aktif memerlukan tautan URL API_URL.");
+      if(!nama || !jumlah) return alert("Mohon pilih staf dan jumlah hari cuti.");
 
       fetch(API_URL, {
         method: "POST",
@@ -285,39 +281,26 @@
       })
       .then(res => res.json())
       .then(res => {
-        if(res.status === "success") {
-          alert(res.pesan);
-          fetchMatriksRoster();
-        }
-      })
-      .catch(err => alert("Gagal menyimpan data cuti bulanan."));
+        alert(res.pesan);
+        fetchMatriksRoster();
+      });
     }
 
-    // Fungsi Pengisi Data Dummy Visual jika Belum Terhubung GAS
-    function renderSimulasiLokal() {
-      const tbody = document.getElementById("tabelJadwalBody");
-      tbody.innerHTML = "";
-      const dummy = [
-        { nama: "Karau Maria", peran: "Kepala Ruangan", def: "OFFC" },
-        { nama: "Katim Ani", peran: "Ketua Tim", def: "P" },
-        { nama: "Perawat Budi", peran: "MOD", def: "-" },
-        { nama: "Citra", peran: "Pelaksana", def: "-" },
-        { nama: "Dedi", peran: "Pelaksana", def: "-" }
-      ];
-      dummy.forEach(p => {
-        let tr = document.createElement("tr");
-        tr.className = "border-b border-slate-100";
-        let tdInfo = document.createElement("td");
-        tdInfo.className = "p-2.5 font-medium border bg-white sticky left-0 shadow-xs";
-        tdInfo.innerHTML = `${p.nama}<br><span class="text-[9px] text-slate-400 font-normal">${p.peran}</span>`;
-        tr.appendChild(tdInfo);
-        for(let d=1; d<=31; d++) {
-          let td = document.createElement("td");
-          td.textContent = p.def;
-          td.className = "p-1.5 text-center border font-bold " + dapatkanWarnaShift(p.def);
-          tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
+    function eksekusiPerubahanMOD() {
+      const namaLama = document.getElementById("modLama").value;
+      const namaBaru = document.getElementById("modBaru").value;
+      if(!namaLama || !namaBaru) return alert("Mohon lengkapi pengisian pejabat MOD.");
+      if(namaLama === namaBaru) return alert("Nama pejabat lama dan baru tidak boleh sama.");
+      if(!confirm(`Sahkan perubahan struktural jabatan MOD tetap baru?`)) return;
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "updateMODTetap", namaLama: namaLama, namaBaru: namaBaru })
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.pesan);
+        window.location.reload();
       });
     }
   </script>
