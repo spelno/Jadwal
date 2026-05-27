@@ -6,7 +6,6 @@
   <title>Anugerah Scheduler - Ruangan Aster</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
-    /* Format Khusus Layout Cetak (Print Friendly) */
     @media print {
       body { background: white; color: black; padding: 0; }
       .no-print { display: none !important; }
@@ -112,7 +111,11 @@
           Sahkan Jabatan MOD Baru
         </button>
       </div>
+    </div>
 
+    <div id="debugBox" class="no-print hidden mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl text-xs text-amber-900 font-mono">
+      <h3 class="font-bold text-amber-800 uppercase mb-1">🛠️ Konsol Diagnostik Sistem (Bantuan Pelacakan):</h3>
+      <p id="debugText"></p>
     </div>
 
     <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
@@ -141,27 +144,41 @@
             </tr>
           </thead>
           <tbody id="tabelJadwalBody">
-            </tbody>
+            <tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi database aktif...</td></tr>
+          </tbody>
         </table>
       </div>
     </div>
   </main>
 
   <script>
-    // PASTE URL DEPLOYMENT WEB APP GOOGLE APPS SCRIPT ANDA DI BAWAH INI
+    // GANTI TULISAN DI BAWAH INI DENGAN LINK WEB APP /EXEC ANDA YANG ASLI
     const API_URL = "https://script.google.com/macros/s/AKfycbyZoIAmq8D2QHhQfyjJtC_D7CLT7qnvJyvyPvfhu9etK6ekMFfRdqTwkV1atbb4pvCX/exec";
 
     document.addEventListener("DOMContentLoaded", function() {
+      if(API_URL.includes("URL_WEB_APP_GAS_ANDA") || API_URL === "") {
+        tampilkanDebug("Sistem mendeteksi variabel API_URL masih kosong atau bernilai teks standar. Silakan ganti dengan link Web App Google Apps Script Anda.");
+        return;
+      }
       fetchDataPerawat();
       fetchMatriksRoster();
     });
 
+    function tampilkanDebug(pesan) {
+      const box = document.getElementById("debugBox");
+      const text = document.getElementById("debugText");
+      box.classList.remove("hidden");
+      text.innerHTML += pesan + "<br>";
+    }
+
     function fetchDataPerawat() {
-      if(API_URL.includes("URL_WEB_APP_GAS_ANDA")) return;
-      
       fetch(`${API_URL}?action=getPerawat`)
         .then(res => res.json())
         .then(data => {
+          if(!Array.isArray(data)) {
+            tampilkanDebug(`Eror getPerawat: Server mengembalikan data non-array. Isi response: ${JSON.stringify(data)}`);
+            return;
+          }
           const selectPlot = document.getElementById("pilihPerawat");
           const selectCuti = document.getElementById("cutiNamaPerawat");
           const selectModLama = document.getElementById("modLama");
@@ -183,25 +200,27 @@
               selectCuti.appendChild(oCuti);
             }
           });
-        });
+        })
+        .catch(err => tampilkanDebug(`Koneksi Gagal (getPerawat): ${err.message}. Pastikan status Web App GAS di-set ke 'Anyone'.`));
     }
 
     function fetchMatriksRoster() {
       const tbody = document.getElementById("tabelJadwalBody");
-      tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi database aktif...</td></tr>`;
-
-      if(API_URL.includes("URL_WEB_APP_GAS_ANDA")) {
-        tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-amber-600 font-medium">⚠️ Silakan tempel URL Web App GAS Anda pada kode index.html.</td></tr>`;
-        return;
-      }
-
+      
       fetch(`${API_URL}?action=getMatriks`)
         .then(res => res.json())
         .then(matrix => {
+          if(!Array.isArray(matrix)) {
+            tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Format Basis Data Salah.</td></tr>`;
+            tampilkanDebug(`Eror getMatriks: Data bukan array matriks. Periksa apakah tab 'Matriks_Jadwal' kosong atau salah nama.`);
+            return;
+          }
+
           tbody.innerHTML = "";
+          // Iterasi dimulai dari baris ke-2 (index 1) karena baris ke-1 adalah judul kolom
           for(let i = 1; i < matrix.length; i++) {
             let baris = matrix[i];
-            if(!baris[0]) continue;
+            if(!baris || baris.length === 0 || !baris[0]) continue;
 
             let tr = document.createElement("tr");
             tr.className = "border-b border-slate-100 hover:bg-slate-50/50 transition";
@@ -213,7 +232,7 @@
 
             for(let d = 1; d <= 31; d++) {
               let tdVal = document.createElement("td");
-              let val = baris[d] ? baris[d].toString().trim() : "-";
+              let val = baris[d] !== undefined && baris[d] !== null ? baris[d].toString().trim() : "-";
               if(val === "") val = "-";
               tdVal.textContent = val;
               tdVal.className = "p-1 text-center border font-bold " + dapatkanWarnaShift(val);
@@ -221,9 +240,14 @@
             }
             tbody.appendChild(tr);
           }
+
+          if(tbody.children.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400">Tidak ada baris data perawat yang terdeteksi di Matriks_Jadwal.</td></tr>`;
+          }
         })
         .catch(err => {
           tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Gagal memuat basis data asli dari spreadsheet.</td></tr>`;
+          tampilkanDebug(`Eror Loop Matriks: ${err.message}. Ini biasanya terjadi jika ada kolom tanggal yang terhapus atau format nama di kolom A salah.`);
         });
     }
 
