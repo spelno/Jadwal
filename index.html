@@ -6,7 +6,6 @@
   <title>Anugerah Scheduler - Ruangan Aster</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
-    /* Optimization Layout untuk Hasil Cetak Kertas Printer */
     @media print {
       body { background: white; color: black; padding: 0; margin: 0; }
       .no-print { display: none !important; }
@@ -39,14 +38,16 @@
 
   <main class="max-w-7xl mx-auto px-6 py-8 print-container">
     
+    <!-- KOP FORMAL CETAK -->
     <div class="kop-cetak-formal text-center">
       <h1 class="text-lg font-bold uppercase tracking-wide text-black" style="font-family: 'Times New Roman', Times, serif;">RS ANUGERAH TOMOHON</h1>
       <h2 class="text-sm font-bold uppercase tracking-normal text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 2px;">JADWAL DINAS DINAMIS PERAWAT — RUANGAN ASTER ATAS</h2>
-      <p class="text-xs font-medium text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 4px;" id="judulBulanCetak">Periode Bulan: Memuat...</p>
+      <p class="text-xs font-medium text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 4px;" id="judulBulanCetak">Periode Bulan: -</p>
     </div>
     
+    <!-- INPUT PANEL -->
     <div class="no-print grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      
+      <!-- FORM A -->
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
         <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">📅 Plotting Roster Bulanan</h2>
         <form id="formRequest" class="space-y-3">
@@ -76,6 +77,7 @@
         <div id="statusMessage" class="mt-3 text-[11px] hidden p-2.5 rounded-xl font-medium"></div>
       </div>
 
+      <!-- FORM B -->
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌴 Alokasi Jatah Cuti Bulanan</h2>
@@ -93,11 +95,10 @@
             </div>
           </div>
         </div>
-        <button onclick="simpanCutiTahunan()" class="w-full mt-4 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs text-center">
-          Simpan Data Cuti Bulanan
-        </button>
+        <button onclick="simpanCutiTahunan()" class="w-full mt-4 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs text-center">Simpan Data Cuti Bulanan</button>
       </div>
 
+      <!-- FORM C -->
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ Otoritas Manajemen (MOD Tetap)</h2>
@@ -117,24 +118,39 @@
             </div>
           </div>
         </div>
-        <button onclick="eksekusiPerubahanMOD()" class="w-full mt-4 bg-slate-900 text-white font-semibold py-2 rounded-xl text-xs text-center">
-          Sahkan Jabatan MOD Baru
-        </button>
+        <button onclick="eksekusiPerubahanMOD()" class="w-full mt-4 bg-slate-900 text-white font-semibold py-2 rounded-xl text-xs text-center">Sahkan Jabatan MOD Baru</button>
       </div>
     </div>
 
+    <!-- MAIN ROSTER DATA TABLE -->
     <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
-      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
         <div>
-          <h2 class="text-base font-bold text-slate-900" id="judulBulanScreen">Matriks Kontrol Roster Ruangan</h2>
+          <h2 class="text-base font-bold text-slate-900" id="judulBulanScreen">Matriks Roster Ruangan Perawat</h2>
           <p class="text-xs text-slate-400 font-medium mt-0.5">RS Anugerah Tomohon — Ruangan Aster (Atas)</p>
         </div>
-        <div class="no-print text-[11px] font-medium flex flex-wrap gap-2.5">
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-slate-100 border"></span> Offc</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-teal-50 border"></span> Pagi</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-50 border"></span> Siang</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-50 border"></span> Malam</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-50 border"></span> OFF</span>
+        
+        <!-- FITUR TERBARU: MANUAL MONTH & YEAR SELECTOR -->
+        <div class="no-print flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+          <select id="selectBulanManual" onchange="updateBulanManual()" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-hidden">
+            <option value="Januari">Januari</option>
+            <option value="Februari">Februari</option>
+            <option value="Maret">Maret</option>
+            <option value="April">April</option>
+            <option value="Mei" selected>Mei</option>
+            <option value="Juni">Juni</option>
+            <option value="Juli">Juli</option>
+            <option value="Agustus">Agustus</option>
+            <option value="September">September</option>
+            <option value="Oktober">Oktober</option>
+            <option value="November">November</option>
+            <option value="Desember">Desember</option>
+          </select>
+          <select id="selectTahunManual" onchange="updateBulanManual()" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-hidden">
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+          </select>
         </div>
       </div>
 
@@ -149,7 +165,7 @@
             </tr>
           </thead>
           <tbody id="tabelJadwalBody">
-            <tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi database aktif...</td></tr>
+            <tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Menghubungkan ke database Google Sheets...</td></tr>
           </tbody>
         </table>
       </div>
@@ -157,28 +173,33 @@
   </main>
 
   <script>
-    // URL Web App Google Apps Script Anda yang sudah aktif
-    const API_URL = "https://script.google.com/macros/s/AKfycby_m-avv3_FS2H7nxxSTHbAOeh94TZlBXWJ58PaA31rLfnE-BaeZ_2Y0ISvvKLR8l1W/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbx8t1fy9JDZxxYXQpX9zzaMlR6oGl5aVkV1V6cK5jUeVCzb4ddjA86ubnaGca9ro7kR/exec";
 
     document.addEventListener("DOMContentLoaded", function() {
-      setJudulBulanOtomatis();
+      updateBulanManual();
       fetchDataPerawat();
       fetchMatriksRoster();
     });
 
-    function setJudulBulanOtomatis() {
-      const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-      const waktuSekarang = new Date();
-      const formatTeksLengkap = `${namaBulan[waktuSekarang.getMonth()]} ${waktuSekarang.getFullYear()}`;
-      document.getElementById("judulBulanScreen").textContent = `Matriks Roster Ruangan Perawat — Periode ${formatTeksLengkap}`;
-      document.getElementById("judulBulanCetak").textContent = `Periode Bulan: ${formatTeksLengkap}`;
+    // Mengganti judul matriks sesuai pilihan manual dropdown
+    function updateBulanManual() {
+      const bln = document.getElementById("selectBulanManual").value;
+      const thn = document.getElementById("selectTahunManual").value;
+      const formatLengkap = `${bln} ${thn}`;
+      document.getElementById("judulBulanScreen").textContent = `Matriks Roster Ruangan Perawat — Periode ${formatLengkap}`;
+      document.getElementById("judulBulanCetak").textContent = `Periode Bulan: ${formatLengkap}`;
     }
 
     function fetchDataPerawat() {
       fetch(`${API_URL}?action=getPerawat`)
         .then(res => res.json())
         .then(data => {
+          if (data && data.error) {
+            console.log("Eror Server GAS:", data.error);
+            return;
+          }
           if (!Array.isArray(data)) return;
+          
           const selectPlot = document.getElementById("pilihPerawat");
           const selectCuti = document.getElementById("cutiNamaPerawat");
           const selectModLama = document.getElementById("modLama");
@@ -213,6 +234,10 @@
       fetch(`${API_URL}?action=getMatriks`)
         .then(res => res.json())
         .then(matrix => {
+          if (matrix && matrix.error) {
+            tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium bg-rose-50/50">⚠️ Eror Spreadsheet: ${matrix.error}</td></tr>`;
+            return;
+          }
           if(!Array.isArray(matrix)) return;
           tbody.innerHTML = "";
           
@@ -240,7 +265,7 @@
           }
         })
         .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Gagal memuat basis data asli dari spreadsheet.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium bg-rose-50/50">❌ Gagal memuat basis data asli dari spreadsheet. <br><span class="text-[10px] text-slate-400 font-mono block mt-1">Lakukan Deployment rilis baru (New Version) pada Apps Script Anda.</span></td></tr>`;
         });
     }
 
