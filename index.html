@@ -1,29 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="p-5 bg-slate-50">
-  <h1 class="text-xl font-bold mb-4">Smart-Roster System</h1>
-  <button onclick="prosesWizard()" class="bg-teal-600 text-white px-4 py-2 rounded-lg">Mulai Setup & Smart Fill</button>
-  
-  <div id="tabelContainer" class="mt-6 bg-white p-4 rounded-xl shadow"></div>
+<body class="p-8 bg-slate-100">
+  <div class="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+    <h1 class="text-xl font-bold mb-1">Smart-Roster System</h1>
+    <p class="text-sm text-slate-500 mb-6">Klik tombol di bawah untuk membuat jadwal bulanan secara otomatis.</p>
+    
+    <button onclick="prosesWizard()" id="btnAction" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl transition">
+      Mulai Setup & Smart Fill
+    </button>
+  </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbys76KUIkwMi_Nz5GThKq2Y0Sf-FgXsLRgdKBqWPp_NSFXmLdgHI5DktitXVfuEryGG/exec"; // GANTI DENGAN URL WEB APP ANDA
+    // GANTI URL INI DENGAN URL WEB APP ANDA
+    const API_URL = "https://script.google.com/macros/s/AKfycbzp1ov4XQMjxf4zwB7v5Quyf5ecAUJ-2YGE3NegtLPk5mAsN-dtxvNRcWMbvDO3nzda/exec"; 
 
     async function prosesWizard() {
-      const thn = "2026", bln = "05"; // Bisa dibuatkan input prompt
-      alert("Memproses Setup & Smart Fill...");
+      const btn = document.getElementById("btnAction");
+      btn.disabled = true;
+      btn.textContent = "Sedang memproses, mohon tunggu...";
       
-      // 1. Inisialisasi Matriks
-      await fetch(`${API_URL}?action=getMatriks&tahun=${thn}&bulan=${bln}`);
+      const thn = "2026", bln = "05"; // Anda bisa mengubah ini menjadi input dinamis
       
-      // 2. Jalankan Smart Fill (Otomatis Isi Kosong)
-      await fetch(`${API_URL}?action=smartFill&tahun=${thn}&bulan=${bln}`);
-      
-      alert("Jadwal berhasil dibuat dan diisi otomatis!");
-      location.reload();
+      try {
+        // 1. Inisialisasi Matriks
+        await fetch(`${API_URL}?action=getMatriks&tahun=${thn}&bulan=${bln}`);
+        
+        // 2. Jalankan Smart Fill (Otomatis Isi)
+        await fetch(`${API_URL}?action=smartFill&tahun=${thn}&bulan=${bln}`);
+        
+        alert("Sukses! Jadwal berhasil dibuat dan diisi otomatis.");
+        location.reload();
+      } catch (err) {
+        console.error(err);
+        alert("Gagal terhubung. Pastikan Web App sudah di-deploy dengan akses 'Anyone'.");
+        btn.disabled = false;
+        btn.textContent = "Coba Lagi";
+      }
     }
   </script>
 </body>
