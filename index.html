@@ -6,6 +6,7 @@
   <title>Anugerah Scheduler - Ruangan Aster</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
+    /* Optimization Layout untuk Hasil Cetak Kertas Printer */
     @media print {
       body { background: white; color: black; padding: 0; margin: 0; }
       .no-print { display: none !important; }
@@ -21,7 +22,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
 
-  <!-- NAVIGATION HEADER -->
   <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -39,32 +39,30 @@
 
   <main class="max-w-7xl mx-auto px-6 py-8 print-container">
     
-    <!-- KOP FORMAL CETAK -->
     <div class="kop-cetak-formal text-center">
       <h1 class="text-lg font-bold uppercase tracking-wide text-black" style="font-family: 'Times New Roman', Times, serif;">RS ANUGERAH TOMOHON</h1>
       <h2 class="text-sm font-bold uppercase tracking-normal text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 2px;">JADWAL DINAS DINAMIS PERAWAT — RUANGAN ASTER ATAS</h2>
       <p class="text-xs font-medium text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 4px;" id="judulBulanCetak">Periode Bulan: Memuat...</p>
     </div>
     
-    <!-- INPUT PANEL -->
     <div class="no-print grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <!-- PANEL A -->
+      
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
         <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">📅 Plotting Roster Bulanan</h2>
         <form id="formRequest" class="space-y-3">
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Nama Perawat</label>
-            <select id="pilihPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden" required>
-              <option value="">Pilih Karyawan...</option>
+            <select id="pilihPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500" required>
+              <option value="">Memuat Daftar Perawat...</option>
             </select>
           </div>
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pilih Tanggal</label>
-            <input type="date" id="pilihTanggal" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden" required>
+            <input type="date" id="pilihTanggal" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500" required>
           </div>
           <div>
             <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pilihan Dinas / Shift</label>
-            <select id="pilihShift" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden" required>
+            <select id="pilihShift" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden focus:border-teal-500" required>
               <option value="P">Pagi (08.00 - 15.00)</option>
               <option value="S">Siang (15.00 - 21.00)</option>
               <option value="M">Malam (20.00 - 08.00)</option>
@@ -78,52 +76,53 @@
         <div id="statusMessage" class="mt-3 text-[11px] hidden p-2.5 rounded-xl font-medium"></div>
       </div>
 
-      <!-- PANEL B -->
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌴 Alokasi Jatah Cuti Bulanan</h2>
-          <p class="text-[11px] text-slate-500 mb-4">Potong kuota jatah wajib kerja staf.</p>
+          <p class="text-[11px] text-slate-500 mb-4">Potong kuota jatah wajib kerja jika ada perawat yang cuti panjang.</p>
           <div class="space-y-3">
             <div>
               <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Nama Perawat</label>
               <select id="cutiNamaPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
-                <option value="">Pilih Karyawan...</option>
+                <option value="">Pilih Perawat...</option>
               </select>
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Total Hari Cuti</label>
-              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 12" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
+              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 12" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden" min="1" max="31">
             </div>
           </div>
         </div>
-        <button onclick="simpanCutiTahunan()" class="w-full mt-4 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs text-center">Simpan Data Cuti Bulanan</button>
+        <button onclick="simpanCutiTahunan()" class="w-full mt-4 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs text-center">
+          Simpan Data Cuti Bulanan
+        </button>
       </div>
 
-      <!-- PANEL C -->
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ Otoritas Manajemen (MOD Tetap)</h2>
-          <p class="text-[11px] text-slate-500 mb-4">Pergantian struktural personil MOD ruangan.</p>
+          <p class="text-[11px] text-slate-500 mb-4">Gunakan ini hanya jika ada pergantian resmi personil jabatan MOD tetap.</p>
           <div class="space-y-3">
             <div>
-              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pejabat MOD Aktif</label>
+              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Pejabat MOD Aktif Saat Ini</label>
               <select id="modLama" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
-                <option value="">Pilih Pejabat Aktif...</option>
+                <option value="">Pilih Perawat...</option>
               </select>
             </div>
             <div>
-              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Tunjuk Pengganti</label>
+              <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Tunjuk Personil Pengganti</label>
               <select id="modBaru" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-hidden">
-                <option value="">Pilih Pengganti...</option>
+                <option value="">Pilih Perawat...</option>
               </select>
             </div>
           </div>
         </div>
-        <button onclick="eksekusiPerubahanMOD()" class="w-full mt-4 bg-slate-900 text-white font-semibold py-2 rounded-xl text-xs text-center">Sahkan Jabatan MOD Baru</button>
+        <button onclick="eksekusiPerubahanMOD()" class="w-full mt-4 bg-slate-900 text-white font-semibold py-2 rounded-xl text-xs text-center">
+          Sahkan Jabatan MOD Baru
+        </button>
       </div>
     </div>
 
-    <!-- UTILITY TABLE DASHBOARD -->
     <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-6 border-b border-slate-100 pb-4">
         <div>
@@ -158,8 +157,8 @@
   </main>
 
   <script>
-    // ⚠️ PASTIKAN URL DI BAWAH INI ADALAH URL WEB APP ANDA YANG BARU SETELAH DEPLOY ULANG!
-    const API_URL = "https://script.google.com/macros/s/AKfycbyAzSjDm2HY-_sHk1DZvg_dbFIfkkVzEonQI5yKNaoQLzefN570jqH9wJMzZ-R3QqNI/exec";
+    // URL Web App Google Apps Script Anda yang sudah aktif
+    const API_URL = "https://script.google.com/macros/s/AKfycby_m-avv3_FS2H7nxxSTHbAOeh94TZlBXWJ58PaA31rLfnE-BaeZ_2Y0ISvvKLR8l1W/exec";
 
     document.addEventListener("DOMContentLoaded", function() {
       setJudulBulanOtomatis();
@@ -171,57 +170,52 @@
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
       const waktuSekarang = new Date();
       const formatTeksLengkap = `${namaBulan[waktuSekarang.getMonth()]} ${waktuSekarang.getFullYear()}`;
-      document.getElementById("judulBulanScreen").textContent = `Matriks Roster Ruangan — Periode ${formatTeksLengkap}`;
+      document.getElementById("judulBulanScreen").textContent = `Matriks Roster Ruangan Perawat — Periode ${formatTeksLengkap}`;
       document.getElementById("judulBulanCetak").textContent = `Periode Bulan: ${formatTeksLengkap}`;
     }
 
     function fetchDataPerawat() {
       fetch(`${API_URL}?action=getPerawat`)
-        .then(res => {
-          if(!res.ok) throw new Error(`HTTP Status ${res.status}`);
-          return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
-          if(data.eror) return;
+          if (!Array.isArray(data)) return;
           const selectPlot = document.getElementById("pilihPerawat");
           const selectCuti = document.getElementById("cutiNamaPerawat");
           const selectModLama = document.getElementById("modLama");
           const selectModBaru = document.getElementById("modBaru");
 
+          selectPlot.innerHTML = '<option value="">Pilih Perawat...</option>';
+          selectCuti.innerHTML = '<option value="">Pilih Perawat...</option>';
+          selectModLama.innerHTML = '<option value="">Pilih Perawat...</option>';
+          selectModBaru.innerHTML = '<option value="">Pilih Perawat...</option>';
+
           data.forEach(p => {
-            let opt = document.createElement("option"); opt.value = p.nama; opt.textContent = `${p.nama} (${p.grupRoster})`;
+            let opt = document.createElement("option");
+            opt.value = p.nama;
+            opt.textContent = `${p.nama} (Sandi ${p.grupRoster})`;
             selectPlot.appendChild(opt);
+
+            let oCuti = document.createElement("option"); oCuti.value = p.nama; oCuti.textContent = p.nama;
+            selectCuti.appendChild(oCuti);
+
             let oMod1 = document.createElement("option"); oMod1.value = p.nama; oMod1.textContent = p.nama;
             let oMod2 = document.createElement("option"); oMod2.value = p.nama; oMod2.textContent = p.nama;
-            selectModLama.appendChild(oMod1); selectModBaru.appendChild(oMod2);
-            if(p.peran !== "Kepala Ruangan") {
-              let oCuti = document.createElement("option"); oCuti.value = p.nama; oCuti.textContent = p.nama;
-              selectCuti.appendChild(oCuti);
-            }
+            selectModLama.appendChild(oMod1);
+            selectModBaru.appendChild(oMod2);
           });
         })
-        .catch(err => console.log("Gagal muat data perawat:", err.message));
+        .catch(err => console.log("Gagal memuat list perawat:", err.message));
     }
 
     function fetchMatriksRoster() {
       const tbody = document.getElementById("tabelJadwalBody");
       
       fetch(`${API_URL}?action=getMatriks`)
-        .then(res => {
-          if(!res.ok) throw new Error(`Server GAS merespon HTTP ${res.status}`);
-          return res.json();
-        })
+        .then(res => res.json())
         .then(matrix => {
-          if(matrix.eror) {
-            tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">⚠️ Google Sheets Error: ${matrix.eror}</td></tr>`;
-            return;
-          }
-          if(!Array.isArray(matrix)) {
-            tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">⚠️ Data dari spreadsheet bukan berwujud matriks.</td></tr>`;
-            return;
-          }
-
+          if(!Array.isArray(matrix)) return;
           tbody.innerHTML = "";
+          
           for(let i = 1; i < matrix.length; i++) {
             let baris = matrix[i];
             if(!baris || baris.length === 0 || !baris[0]) continue;
@@ -246,10 +240,7 @@
           }
         })
         .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium bg-rose-50/50">
-            ❌ Gagal Mengakses Jaringan Database.<br>
-            <span class="text-[10px] font-mono text-slate-500 block mt-1">Detail Masalah: ${err.message}. Pastikan URL Web App GAS benar dan aksesnya disetel ke 'Anyone'.</span>
-          </td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-rose-600 font-medium">Gagal memuat basis data asli dari spreadsheet.</td></tr>`;
         });
     }
 
@@ -272,7 +263,7 @@
       const msg = document.getElementById("statusMessage");
       
       msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-slate-100 text-slate-700 block";
-      msg.textContent = "Mengirim perubahan...";
+      msg.textContent = "Mengunci plotting jadwal perawat ke spreadsheet...";
 
       fetch(API_URL, {
         method: "POST",
@@ -280,16 +271,48 @@
       })
       .then(res => res.json())
       .then(hasil => {
-        if(hasil.status === "rejected") {
-          msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-rose-50 text-rose-800 border border-rose-200 block";
-          msg.textContent = `❌ ${hasil.validasi.pesanEror}`;
-        } else {
-          msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
-          msg.textContent = `✅ Sukses mengunci jadwal.`;
-          fetchMatriksRoster();
-        }
+        msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
+        msg.textContent = `✅ Berhasil mengunci jadwal ${nama}.`;
+        fetchMatriksRoster();
+      })
+      .catch(err => {
+        msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-rose-50 text-rose-800 block";
+        msg.textContent = `❌ Terjadi kesalahan pengiriman data.`;
       });
     });
+
+    function simpanCutiTahunan() {
+      const nama = document.getElementById("cutiNamaPerawat").value;
+      const jumlah = document.getElementById("cutiJumlahHari").value;
+      if(!nama || !jumlah) return alert("Mohon pilih perawat dan tentukan jumlah hari.");
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "saveCuti", nama: nama, jumlahHari: jumlah })
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.pesan);
+        fetchMatriksRoster();
+      });
+    }
+
+    function eksekusiPerubahanMOD() {
+      const namaLama = document.getElementById("modLama").value;
+      const namaBaru = document.getElementById("modBaru").value;
+      if(!namaLama || !namaBaru) return alert("Mohon lengkapi pengisian nama perawat pejabat MOD.");
+      if(!confirm(`Sahkan perubahan struktural jabatan MOD tetap baru?`)) return;
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "updateMODTetap", namaLama: namaLama, namaBaru: namaBaru })
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.pesan);
+        window.location.reload();
+      });
+    }
   </script>
 </body>
 </html>
