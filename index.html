@@ -47,9 +47,8 @@
       <p class="text-xs font-medium text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 4px;" id="judulBulanCetak">Periode Bulan: -</p>
     </div>
     
-    <!-- NO-PRINT INPUT PANEL (4 GRID SAKALIGUS DENGAN PANEL BARU) -->
     <div class="no-print grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <!-- FORM A: PLOTTING ROSTER -->
+      
       <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">📅 Plotting Roster Bulanan</h2>
@@ -65,7 +64,7 @@
               <input type="date" id="pilihTanggal" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" required>
             </div>
             <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pilihan Dinas / Shift</label>
+              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pilihan Dinas</label>
               <select id="pilihShift" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" required>
                 <option value="P">Pagi (P)</option>
                 <option value="S">Siang (S)</option>
@@ -79,11 +78,10 @@
         </div>
       </div>
 
-      <!-- PANEL BARU: MANAJEMEN HARI LIBUR NASIONAL -->
       <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">🎉 Atur Libur Nasional</h2>
-          <p class="text-[10px] text-slate-500 mb-3">Tandai tanggal merah selain hari Minggu untuk bulan aktif.</p>
+          <p class="text-[10px] text-slate-500 mb-3">Tandai tanggal merah selain hari Minggu di bulan terpilih.</p>
           <div class="space-y-2.5">
             <div>
               <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pilih Tanggal Merah</label>
@@ -94,18 +92,17 @@
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Nama Hari Libur / Keterangan</label>
-              <input type="text" id="liburKeterangan" placeholder="Contoh: Kenaikan Yesus Kristus" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
+              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Keterangan Libur</label>
+              <input type="text" id="liburKeterangan" placeholder="Contoh: Tahun Baru Caka" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
             </div>
           </div>
         </div>
         <button onclick="eksekusiSimpanLiburNasional()" class="w-full mt-3 bg-red-50 text-red-700 hover:bg-red-100 font-bold py-2 rounded-xl text-xs text-center">Simpan Tanggal Merah</button>
       </div>
 
-      <!-- FORM B: JATAH CUTI BULANAN -->
       <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
         <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌴 Alokasi Jatah Cuti Bulanan</h2>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌴 Jatah Cuti Bulanan</h2>
           <p class="text-[10px] text-slate-500 mb-3">Potong kuota jatah wajib kerja perawat.</p>
           <div class="space-y-2.5">
             <div>
@@ -116,18 +113,17 @@
             </div>
             <div>
               <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Total Hari Cuti</label>
-              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 12" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" min="1" max="31">
+              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 5" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" min="1" max="31">
             </div>
           </div>
         </div>
         <button onclick="simpanCutiTahunan()" class="w-full mt-3 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs text-center">Simpan Data Cuti</button>
       </div>
 
-      <!-- FORM C: MOD TETAP -->
       <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
         <div>
           <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ Otoritas MOD Tetap</h2>
-          <p class="text-[10px] text-slate-500 mb-3">Pergantian resmi struktural jabatan MOD.</p>
+          <p class="text-[10px] text-slate-500 mb-3">Sahkan pergantian jabatan struktural MOD.</p>
           <div class="space-y-2.5">
             <div>
               <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pejabat MOD Aktif</label>
@@ -147,7 +143,6 @@
       </div>
     </div>
 
-    <!-- MAIN ROSTER DATA TABLE -->
     <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
         <div>
@@ -183,28 +178,25 @@
         <table class="w-full text-left border-collapse text-[11px]">
           <thead>
             <tr class="bg-slate-50 border-b border-slate-200" id="headerTanggalRow">
-              <!-- Render via JavaScript agar sinkron warna merahnya -->
-            </tr>
+              </tr>
           </thead>
           <tbody id="tabelJadwalBody">
-            <tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi data otomatis...</td></tr>
+            <tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi data multi-tab...</td></tr>
           </tbody>
         </table>
       </div>
 
-      <!-- FOOTER KETERANGAN CETAK JADWAL LIBUR -->
       <div id="footerLiburCetak" class="footer-keterangan-cetak mt-6 border-t border-slate-300 pt-4 text-slate-700">
         <h4 class="font-bold text-xs uppercase text-black mb-1">Keterangan Tanggal Merah & Libur Nasional:</h4>
-        <ul id="listKeteranganLibur" class="list-disc pl-5 space-y-0.5">
-          <!-- Diisi otomatis oleh JS -->
-        </ul>
+        <ul id="listKeteranganLibur" class="list-disc pl-5 space-y-0.5"></ul>
       </div>
     </div>
   </main>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzJxdSnlrH2wfT2PfPE1pFRPENJbP26P1TUtmb4ScM3Sg2g_dc-_JuwWqRfAJamP7Ys/exec";
-    let arrayLiburNasionalGlobal = Array(32).fill(""); // Index 1-31 untuk menampung teks libur
+    // URL API SCRIPT ANDA
+    const API_URL = "https://script.google.com/macros/s/AKfycbwz4ZmJ-BV0GQOz2tyUkIEUG9-781sGP-hnjgcblvGTH6SJmnWpkyKINbHJwcIyzzjv/exec";
+    let arrayLiburNasionalGlobal = Array(32).fill(""); 
 
     document.addEventListener("DOMContentLoaded", function() {
       eksekusiGantiBulan();
@@ -216,9 +208,7 @@
       let jumlahHari = new Date(tahun, parseInt(bulan), 0).getDate();
       for (let d = 1; d <= jumlahHari; d++) {
         let hari = new Date(tahun, parseInt(bulan) - 1, d).getDay();
-        if (hari === 0) { // 0 bermakna hari Minggu
-          daftarMinggu.push(d);
-        }
+        if (hari === 0) daftarMinggu.push(d);
       }
       return daftarMinggu;
     }
@@ -233,7 +223,7 @@
         let isLiburNasional = arrayLiburNasionalGlobal[d] !== "";
         
         if (isMinggu || isLiburNasional) {
-          html += `<th class="p-1 font-bold text-red-600 bg-red-100 text-center border w-8 shadow-inner" title="${arrayLiburNasionalGlobal[d] || 'Hari Minggu'}">${d}</th>`;
+          html += `<th class="p-1 font-bold text-red-600 bg-red-100 text-center border w-8" title="${arrayLiburNasionalGlobal[d] || 'Hari Minggu'}">${d}</th>`;
         } else {
           html += `<th class="p-1 font-bold text-slate-700 text-center border w-8">${d}</th>`;
         }
@@ -255,16 +245,16 @@
 
     function fetchMatriksRosterDinamis(tahun, bulan) {
       const tbody = document.getElementById("tabelJadwalBody");
-      tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Memanggil data dinamis...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Memanggil data sheet 'Jadwal_${tahun}_${bulan}'...</td></tr>`;
       
       arrayLiburNasionalGlobal = Array(32).fill(""); 
 
+      // PERBAIKAN TOTAL: Menembak URL API secara presisi & dinamis
       fetch(`${API_URL}?action=getMatriks&tahun=${tahun}&bulan=${bulan}`)
         .then(res => res.json())
         .then(matrix => {
           if(!Array.isArray(matrix)) return;
           
-          // Deteksi baris INFO_LIBUR_NASIONAL (biasanya di baris indeks ke-1)
           let barisLibur = matrix.find(row => row[0] === "INFO_LIBUR_NASIONAL");
           if (barisLibur) {
             for (let d = 1; d <= 31; d++) {
@@ -272,7 +262,6 @@
             }
           }
 
-          // Render Ulang Header setelah data libur nasional termuat
           renderHeaderTabel(tahun, bulan);
           updateFooterKeteranganCetak();
 
@@ -301,7 +290,6 @@
               let isLiburNasional = arrayLiburNasionalGlobal[d] !== "";
               let warnaDasar = dapatkanWarnaShift(val);
 
-              // Jika hari libur/Minggu dan perawat tersebut tidak masuk (atau off), beri aksen merah pastel tipis
               if ((isMinggu || isLiburNasional) && (val === "-" || val.toUpperCase() === "OFF")) {
                 tdVal.className = "p-1 text-center border font-bold bg-red-50/70 text-red-500";
               } else {
@@ -340,7 +328,7 @@
       const tgl = document.getElementById("liburPilihTanggal").value;
       const ket = document.getElementById("liburKeterangan").value;
 
-      if(!ket) return alert("Mohon isi nama keterangan hari liburnya.");
+      if(!ket) return alert("Mohon isi keterangan hari libur.");
 
       fetch(API_URL, {
         method: "POST",
@@ -348,437 +336,7 @@
       })
       .then(res => res.json())
       .then(res => {
-        alert("Sukses mengunci hari libur nasional!");
-        document.getElementById("liburKeterangan").value = "";
-        eksekusiGantiBulan();
-      });
-    }
-
-    function fetchDataPerawat() {
-      fetch(`${API_URL}?action=getPerawat`)
-        .then(res => res.json())
-        .then(data => {
-          if (!Array.isArray(data)) return;
-          const selectPlot = document.getElementById("pilihPerawat");
-          const selectCuti = document.getElementById("cutiNamaPerawat");
-          const selectModLama = document.getElementById("modLama");
-          const selectModBaru = document.getElementById("modBaru");
-
-          selectPlot.innerHTML = '<option value="">Pilih Perawat...</option>';
-          selectCuti.innerHTML = '<option value="">Pilih Perawat...</option>';
-          selectModLama.innerHTML = '<option value="">Pilih Perawat...</option>';
-          selectModBaru.innerHTML = '<option value="">Pilih Perawat...</option>';
-
-          data.forEach(p => {
-            let opt = document.createElement("option"); opt.value = p.nama; opt.textContent = `${p.nama} (Sandi ${p.grupRoster})`; selectPlot.appendChild(opt);
-            let oCuti = document.createElement("option"); oCuti.value = p.nama; oCuti.textContent = p.nama; selectCuti.appendChild(oCuti);
-            let oMod1 = document.createElement("option"); oMod1.value = p.nama; oMod1.textContent = p.nama; selectModLama.appendChild(oMod1);
-            let oMod2 = document.createElement("option"); oMod2.value = p.nama; oMod2.textContent = p.nama; selectModBaru.appendChild(oMod2);
-          });
-        });
-    }
-
-    function dapatkanWarnaShift(shift) {
-      switch(shift.toUpperCase()) {
-        case 'P': return 'bg-teal-50 text-teal-700 border-teal-100';
-        case 'S': return 'bg-emerald-50 text-emerald-700 border-emerald-100';
-        case 'M': return 'bg-indigo-50 text-indigo-700 border-indigo-100';
-        case 'OFF': case 'CUTI': return 'bg-rose-50 text-rose-600 border-rose-100';
-        default: return 'text-slate-400 font-normal';
-      }
-    }
-
-    document.getElementById("formRequest").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const nama = document.getElementById("pilihPerawat").value;
-      const tanggal = document.getElementById("pilihTanggal").value;
-      const shift = document.getElementById("pilihShift").value;
-      const msg = document.getElementById("statusMessage");
-      
-      msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-slate-100 text-slate-700 block";
-      msg.textContent = "Mengunci plotting jadwal...";
-
-      fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "plotShift", nama: nama, tanggal: tanggal, shift: shift })
-      })
-      .then(res => res.json())
-      .then(hasil => {
-        msg.className = "mt-3 text-[11px] p-2.5 rounded-xl font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block";
-        msg.textContent = `✅ Berhasil dikunci ke sheet terarah.`;
-        eksekusiGantiBulan();
-      });
-    });
-
-    function simpanCutiTahunan() {
-      const nama = document.getElementById("cutiNamaPerawat").value;
-      const jumlah = document.getElementById("cutiJumlahHari").value;
-      if(!nama || !jumlah) return alert("Mohon pilih perawat & jumlah hari.");
-      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "saveCuti", nama: nama, jumlahHari: jumlah }) })
-      .then(res => res.json()).then(res => { alert(res.pesan); eksekusiGantiBulan(); });
-    }
-
-    function eksekusiPerubahanMOD() {
-      const namaLama = document.getElementById("modLama").value;
-      const namaBaru = document.getElementById("modBaru").value;
-      if(!namaLama || !namaBaru) return alert("Lengkapi data.");
-      if(!confirm(`Sahkan MOD Baru?`)) return;
-      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "updateMODTetap", namaLama: namaLama, namaBaru: namaBaru }) })
-      .then(res => res.json()).then(res => { alert(res.pesan); window.location.reload(); });
-    }
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anugerah Scheduler - Ruangan Aster</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    @media print {
-      body { background: white; color: black; padding: 0; margin: 0; }
-      .no-print { display: none !important; }
-      .print-container { width: 100%; max-width: 100%; box-shadow: none; padding: 0; margin: 0; }
-      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-      table { page-break-inside: avoid; width: 100%; border-collapse: collapse; margin-top: 15px; }
-      th, td { border: 1px solid #000 !important; font-size: 9px; padding: 5px 2px !important; text-align: center; }
-      th:first-child, td:first-child { text-align: left; padding-left: 8px !important; font-size: 10px; font-weight: bold; }
-      .bg-red-100 { background-color: #fee2e2 !important; color: #dc2626 !important; }
-      .text-red-600 { color: #dc2626 !important; font-weight: bold !important; }
-      .kop-cetak-formal { display: block !important; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
-      .footer-keterangan-cetak { display: block !important; margin-top: 25px; font-size: 10px; }
-    }
-    .kop-cetak-formal, .footer-keterangan-cetak { display: none; }
-  </style>
-</head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
-
-  <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md shadow-teal-100">A</div>
-        <div>
-          <h1 class="text-base font-bold tracking-tight text-slate-900">Anugerah Scheduler</h1>
-          <p class="text-xs text-slate-500 font-medium">Ruangan Aster Atas • Panel Kendali Kepala Ruangan</p>
-        </div>
-      </div>
-      <button onclick="window.print()" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-2 cursor-pointer">
-        🖨️ Cetak Jadwal Roster
-      </button>
-    </div>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-6 py-8 print-container">
-    
-    <div class="kop-cetak-formal text-center">
-      <h1 class="text-lg font-bold uppercase tracking-wide text-black" style="font-family: 'Times New Roman', Times, serif;">RS ANUGERAH TOMOHON</h1>
-      <h2 class="text-sm font-bold uppercase tracking-normal text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 2px;">JADWAL DINAS DINAMIS PERAWAT — RUANGAN ASTER ATAS</h2>
-      <p class="text-xs font-medium text-black" style="font-family: 'Times New Roman', Times, serif; margin-top: 4px;" id="judulBulanCetak">Periode Bulan: -</p>
-    </div>
-    
-    <!-- NO-PRINT INPUT PANEL (4 GRID SAKALIGUS DENGAN PANEL BARU) -->
-    <div class="no-print grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <!-- FORM A: PLOTTING ROSTER -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-        <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">📅 Plotting Roster Bulanan</h2>
-          <form id="formRequest" class="space-y-2.5">
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Nama Perawat</label>
-              <select id="pilihPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" required>
-                <option value="">Memuat Daftar Perawat...</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pilih Tanggal</label>
-              <input type="date" id="pilihTanggal" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" required>
-            </div>
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pilihan Dinas / Shift</label>
-              <select id="pilihShift" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" required>
-                <option value="P">Pagi (P)</option>
-                <option value="S">Siang (S)</option>
-                <option value="M">Malam (M)</option>
-                <option value="Off">OFF (Libur)</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 rounded-xl text-xs cursor-pointer text-center">Kunci ke Roster</button>
-          </form>
-          <div id="statusMessage" class="mt-2 text-[10px] hidden p-2 rounded-lg font-medium"></div>
-        </div>
-      </div>
-
-      <!-- PANEL BARU: MANAJEMEN HARI LIBUR NASIONAL -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-        <div>
-          <h2 class="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">🎉 Atur Libur Nasional</h2>
-          <p class="text-[10px] text-slate-500 mb-3">Tandai tanggal merah selain hari Minggu untuk bulan aktif.</p>
-          <div class="space-y-2.5">
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pilih Tanggal Merah</label>
-              <select id="liburPilihTanggal" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
-                <script>
-                  for(let d=1; d<=31; d++) { document.write(`<option value="${d}">Tanggal ${d}</option>`); }
-                </script>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Nama Hari Libur / Keterangan</label>
-              <input type="text" id="liburKeterangan" placeholder="Contoh: Kenaikan Yesus Kristus" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
-            </div>
-          </div>
-        </div>
-        <button onclick="eksekusiSimpanLiburNasional()" class="w-full mt-3 bg-red-50 text-red-700 hover:bg-red-100 font-bold py-2 rounded-xl text-xs text-center">Simpan Tanggal Merah</button>
-      </div>
-
-      <!-- FORM B: JATAH CUTI BULANAN -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-        <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌴 Alokasi Jatah Cuti Bulanan</h2>
-          <p class="text-[10px] text-slate-500 mb-3">Potong kuota jatah wajib kerja perawat.</p>
-          <div class="space-y-2.5">
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Nama Perawat</label>
-              <select id="cutiNamaPerawat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
-                <option value="">Pilih Perawat...</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Total Hari Cuti</label>
-              <input type="number" id="cutiJumlahHari" placeholder="Contoh: 12" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden" min="1" max="31">
-            </div>
-          </div>
-        </div>
-        <button onclick="simpanCutiTahunan()" class="w-full mt-3 bg-teal-50 text-teal-700 hover:bg-teal-100 font-bold py-2 rounded-xl text-xs text-center">Simpan Data Cuti</button>
-      </div>
-
-      <!-- FORM C: MOD TETAP -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-        <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ Otoritas MOD Tetap</h2>
-          <p class="text-[10px] text-slate-500 mb-3">Pergantian resmi struktural jabatan MOD.</p>
-          <div class="space-y-2.5">
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Pejabat MOD Aktif</label>
-              <select id="modLama" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
-                <option value="">Pilih Perawat...</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[10px] font-semibold text-slate-600 uppercase mb-0.5">Personil Pengganti</label>
-              <select id="modBaru" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-hidden">
-                <option value="">Pilih Perawat...</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <button onclick="eksekusiPerubahanMOD()" class="w-full mt-3 bg-slate-900 text-white font-semibold py-2 rounded-xl text-xs text-center">Sahkan MOD Baru</button>
-      </div>
-    </div>
-
-    <!-- MAIN ROSTER DATA TABLE -->
-    <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden p-6">
-      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-        <div>
-          <h2 class="text-base font-bold text-slate-900" id="judulBulanScreen">Matriks Roster Ruangan Perawat</h2>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">RS Anugerah Tomohon — Ruangan Aster (Atas)</p>
-        </div>
-        
-        <div class="no-print flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-          <select id="selectBulanManual" onchange="eksekusiGantiBulan()" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-hidden">
-            <option value="01">Januari</option>
-            <option value="02">Februari</option>
-            <option value="03">Maret</option>
-            <option value="04">April</option>
-            <option value="05" selected>Mei</option>
-            <option value="06">Juni</option>
-            <option value="07">Juli</option>
-            <option value="08">Agustus</option>
-            <option value="09">September</option>
-            <option value="10">Oktober</option>
-            <option value="11">November</option>
-            <option value="12">Desember</option>
-          </select>
-          <select id="selectTahunManual" onchange="eksekusiGantiBulan()" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-hidden">
-            <option value="2025">2025</option>
-            <option value="2026" selected>2026</option>
-            <option value="2027">2027</option>
-            <option value="2028">2028</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse text-[11px]">
-          <thead>
-            <tr class="bg-slate-50 border-b border-slate-200" id="headerTanggalRow">
-              <!-- Render via JavaScript agar sinkron warna merahnya -->
-            </tr>
-          </thead>
-          <tbody id="tabelJadwalBody">
-            <tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Sinkronisasi data otomatis...</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- FOOTER KETERANGAN CETAK JADWAL LIBUR -->
-      <div id="footerLiburCetak" class="footer-keterangan-cetak mt-6 border-t border-slate-300 pt-4 text-slate-700">
-        <h4 class="font-bold text-xs uppercase text-black mb-1">Keterangan Tanggal Merah & Libur Nasional:</h4>
-        <ul id="listKeteranganLibur" class="list-disc pl-5 space-y-0.5">
-          <!-- Diisi otomatis oleh JS -->
-        </ul>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwYyN-Vf50hQf7YgXgL1U1r68zGND2v0i_Z2yIqPz9m8e3gO5Z5U0vEaPZ-u_V-pY7Y/exec";
-    let arrayLiburNasionalGlobal = Array(32).fill(""); // Index 1-31 untuk menampung teks libur
-
-    document.addEventListener("DOMContentLoaded", function() {
-      eksekusiGantiBulan();
-      fetchDataPerawat();
-    });
-
-    function dapatkanHariMinggu(tahun, bulan) {
-      let daftarMinggu = [];
-      let jumlahHari = new Date(tahun, parseInt(bulan), 0).getDate();
-      for (let d = 1; d <= jumlahHari; d++) {
-        let hari = new Date(tahun, parseInt(bulan) - 1, d).getDay();
-        if (hari === 0) { // 0 bermakna hari Minggu
-          daftarMinggu.push(d);
-        }
-      }
-      return daftarMinggu;
-    }
-
-    function renderHeaderTabel(tahun, bulan) {
-      const headerRow = document.getElementById("headerTanggalRow");
-      const listMinggu = dapatkanHariMinggu(tahun, bulan);
-      
-      let html = `<th class="p-3 font-semibold text-slate-700 min-w-[180px] border bg-slate-100">Nama Perawat</th>`;
-      for (let d = 1; d <= 31; d++) {
-        let isMinggu = listMinggu.includes(d);
-        let isLiburNasional = arrayLiburNasionalGlobal[d] !== "";
-        
-        if (isMinggu || isLiburNasional) {
-          html += `<th class="p-1 font-bold text-red-600 bg-red-100 text-center border w-8 shadow-inner" title="${arrayLiburNasionalGlobal[d] || 'Hari Minggu'}">${d}</th>`;
-        } else {
-          html += `<th class="p-1 font-bold text-slate-700 text-center border w-8">${d}</th>`;
-        }
-      }
-      headerRow.innerHTML = html;
-    }
-
-    function eksekusiGantiBulan() {
-      const selectBln = document.getElementById("selectBulanManual");
-      const blnText = selectBln.options[selectBln.selectedIndex].text;
-      const thn = document.getElementById("selectTahunManual").value;
-      const blnAngka = selectBln.value;
-
-      document.getElementById("judulBulanScreen").textContent = `Matriks Roster Ruangan Perawat — Periode ${blnText} ${thn}`;
-      document.getElementById("judulBulanCetak").textContent = `Periode Bulan: ${blnText} ${thn}`;
-      
-      fetchMatriksRosterDinamis(thn, blnAngka);
-    }
-
-    function fetchMatriksRosterDinamis(tahun, bulan) {
-      const tbody = document.getElementById("tabelJadwalBody");
-      tbody.innerHTML = `<tr><td colspan="32" class="p-4 text-center text-slate-400 font-medium">Memanggil data dinamis...</td></tr>`;
-      
-      arrayLiburNasionalGlobal = Array(32).fill(""); 
-
-      fetch(`${API_URL}?action=getMatriks&tahun=${tahun}&bulan=${bulan}`)
-        .then(res => res.json())
-        .then(matrix => {
-          if(!Array.isArray(matrix)) return;
-          
-          // Deteksi baris INFO_LIBUR_NASIONAL (biasanya di baris indeks ke-1)
-          let barisLibur = matrix.find(row => row[0] === "INFO_LIBUR_NASIONAL");
-          if (barisLibur) {
-            for (let d = 1; d <= 31; d++) {
-              if (barisLibur[d]) arrayLiburNasionalGlobal[d] = barisLibur[d].toString().trim();
-            }
-          }
-
-          // Render Ulang Header setelah data libur nasional termuat
-          renderHeaderTabel(tahun, bulan);
-          updateFooterKeteranganCetak();
-
-          tbody.innerHTML = "";
-          const listMinggu = dapatkanHariMinggu(tahun, bulan);
-
-          for(let i = 1; i < matrix.length; i++) {
-            let baris = matrix[i];
-            if(!baris || baris.length === 0 || !baris[0] || baris[0] === "INFO_LIBUR_NASIONAL") continue;
-
-            let tr = document.createElement("tr");
-            tr.className = "border-b border-slate-100 hover:bg-slate-50/50 transition";
-
-            let tdInfo = document.createElement("td");
-            tdInfo.className = "p-2.5 font-medium text-slate-900 border bg-white sticky left-0 z-10 shadow-xs";
-            tdInfo.innerHTML = baris[0];
-            tr.appendChild(tdInfo);
-
-            for(let d = 1; d <= 31; d++) {
-              let tdVal = document.createElement("td");
-              let val = baris[d] !== undefined && baris[d] !== null ? baris[d].toString().trim() : "-";
-              if(val === "") val = "-";
-              tdVal.textContent = val;
-              
-              let isMinggu = listMinggu.includes(d);
-              let isLiburNasional = arrayLiburNasionalGlobal[d] !== "";
-              let warnaDasar = dapatkanWarnaShift(val);
-
-              // Jika hari libur/Minggu dan perawat tersebut tidak masuk (atau off), beri aksen merah pastel tipis
-              if ((isMinggu || isLiburNasional) && (val === "-" || val.toUpperCase() === "OFF")) {
-                tdVal.className = "p-1 text-center border font-bold bg-red-50/70 text-red-500";
-              } else {
-                tdVal.className = "p-1 text-center border font-bold " + warnaDasar;
-              }
-              
-              tr.appendChild(tdVal);
-            }
-            tbody.appendChild(tr);
-          }
-        });
-    }
-
-    function updateFooterKeteranganCetak() {
-      const ul = document.getElementById("listKeteranganLibur");
-      ul.innerHTML = "";
-      let adaLibur = false;
-
-      for (let d = 1; d <= 31; d++) {
-        if (arrayLiburNasionalGlobal[d] !== "") {
-          adaLibur = true;
-          let li = document.createElement("li");
-          li.innerHTML = `<strong>Tanggal ${d}</strong>: ${arrayLiburNasionalGlobal[d]}`;
-          ul.appendChild(li);
-        }
-      }
-
-      if (!adaLibur) {
-        ul.innerHTML = "<li class='text-slate-400 italic'>Tidak ada hari libur nasional tambahan di bulan ini.</li>";
-      }
-    }
-
-    function eksekusiSimpanLiburNasional() {
-      const thn = document.getElementById("selectTahunManual").value;
-      const bln = document.getElementById("selectBulanManual").value;
-      const tgl = document.getElementById("liburPilihTanggal").value;
-      const ket = document.getElementById("liburKeterangan").value;
-
-      if(!ket) return alert("Mohon isi nama keterangan hari liburnya.");
-
-      fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "simpanHariLibur", tahun: thn, bulan: bln, tanggal: tgl, keterangan: ket })
-      })
-      .then(res => res.json())
-      .then(res => {
-        alert("Sukses mengunci hari libur nasional!");
+        alert("Sukses menyimpan tanggal merah!");
         document.getElementById("liburKeterangan").value = "";
         eksekusiGantiBulan();
       });
